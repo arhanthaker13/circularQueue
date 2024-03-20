@@ -1,4 +1,5 @@
 #include "circularQueue.hpp"
+#include <iomanip>
 
 bool Queue::isEmpty() const {
     return head == nullptr;
@@ -9,12 +10,12 @@ bool Queue::isFull() const {
 }
 
 bool Queue::validate(const char* input) {
-    return strlen(input) < 6;
+    return strlen(input) < 7;
 }
 
 void Queue::enqueue() {
     if (isFull()) {
-        std::cout << "Queue overflow" << std::endl;
+        std::cout << "OVERFLOW" << std::endl;
         return;
     }
 
@@ -23,7 +24,7 @@ void Queue::enqueue() {
     std::cin >> input;
 
     if (!validate(input)) {
-        std::cout << "Payload greater than 7 characters" << std::endl;
+        std::cout << "Payload greater than 6 characters" << std::endl;
         return;
     }
 
@@ -34,19 +35,17 @@ void Queue::enqueue() {
     }
 
     strcpy(tail->payload, input);
-    std::cout << "Enter destination: ";
-    std::cin >> tail->dest;
 
     showQueue();
 }
 
 void Queue::dequeue() {
     if (isEmpty()) {
-        std::cout << "Queue underflow" << std::endl;
+        std::cout << "UNDERFLOW" << std::endl;
         return;
     }
 
-    std::cout << "DEQUEUED ELEMENT: " << head->payload << " to " << head->dest << std::endl;
+    std::cout << "DEQUEUED ELEMENT: " << head->payload << std::endl;
 
     if (head == tail) {
         head = tail = nullptr;
@@ -58,23 +57,52 @@ void Queue::dequeue() {
 }
 
 void Queue::showQueue() {
-    std::cout << "Queue: " << std::endl;
     if (!isEmpty()) {
         int startIndex = head - queue;
         int endIndex = tail - queue;
+
+        std::string printOrder[MAXSIZE][2]; // For storing index and payload
+
+        // Initialize printOrder with indexes and empty strings
         for (int i = 0; i < MAXSIZE; ++i) {
-            int index = (startIndex + i) % MAXSIZE;
-            if (startIndex <= endIndex ? (i <= endIndex - startIndex) : (index >= startIndex || index <= endIndex)) {
-                std::cout << i + 1 << ": " << queue[index].payload << " to " << queue[index].dest << std::endl;
-            } else {
-                std::cout << i + 1 << ": blank" << std::endl;
-            }
+            printOrder[i][0] = std::to_string(i + 1); // Convert index to 1-based for display
+            printOrder[i][1] = " "; // Initialize payloads with empty strings
         }
+
+        // Populate printOrder with actual payloads
+        int currentIndex = startIndex;
+        do {
+            // Convert index to 1-based for display and store the payload
+            printOrder[currentIndex][1] = queue[currentIndex].payload;
+
+            // Move to next index, wrapping around if necessary
+            currentIndex = (currentIndex + 1) % MAXSIZE;
+        } while (currentIndex != (endIndex + 1) % MAXSIZE); // Continue until we've covered all active elements
+
+        // Print the table in reverse order
+        std::cout << " ---------------------------\n";
+        std::cout << " | " << std::setw(10) << "Index" << " | " << std::setw(10) << "Payload" << " |\n";
+        std::cout << " ---------------------------\n";
+        for (int i = MAXSIZE - 1; i >= 0; --i) {
+            std::cout << " | " << std::setw(10) << printOrder[i][0] << " | " << std::setw(10) << printOrder[i][1] << " |\n";
+        }
+        std::cout << " ---------------------------\n";
     } else {
-        for (int i = 0; i < MAXSIZE; ++i) {
-            std::cout << i + 1 << ": blank" << std::endl;
+        // If the queue is empty, print an empty table
+        std::cout << " ---------------------------\n";
+        std::cout << " | " << std::setw(10) << "Index" << " | " << std::setw(10) << "Payload" << " |\n";
+        std::cout << " ---------------------------\n";
+        for (int i = MAXSIZE; i > 0; --i) {
+            std::cout << " | " << std::setw(10) << i << " | " << std::setw(10) << " " << " |\n";
         }
+        std::cout << " ---------------------------\n";
     }
-    std::cout << "Head location: " << (head ? (head - queue + 1) : 0) << ", Tail location: " << (tail ? (tail - queue + 1) : 0) << std::endl;
+
+    std::cout << "\nHead location: " << (head ? (head - queue + 1) : 0) << std::endl
+              << "Tail location: " << (tail ? (tail - queue + 1) : 0) << std::endl;
 }
+
+
+
+
 

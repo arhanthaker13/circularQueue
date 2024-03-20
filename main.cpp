@@ -17,7 +17,7 @@ int main() {
                 std::cout << "Exited Program" << std::endl;
                 return 0;
             } else {
-                std::cout << "Invalid choice, try again!" << std::endl;
+                std::cout << "Invalid choice, try again" << std::endl;
             }
         }
 }
