@@ -101,8 +101,3 @@ void Queue::showQueue() {
     std::cout << "\nHead location: " << (head ? (head - queue + 1) : 0) << std::endl
               << "Tail location: " << (tail ? (tail - queue + 1) : 0) << std::endl;
 }
-
-
-
-
-
