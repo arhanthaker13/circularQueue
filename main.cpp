@@ -5,8 +5,10 @@ int main() {
     char choice;
 
         while(true) {
+
             std::cout << "\ne: enqueue, d: dequeue, s: show, q: quit\nEnter your choice: ";
             std::cin >> choice;
+
             if (choice == 'e') {
                 q.enqueue();
             } else if (choice == 'd') {

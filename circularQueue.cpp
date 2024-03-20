@@ -83,9 +83,11 @@ void Queue::showQueue() {
         std::cout << " ---------------------------\n";
         std::cout << " | " << std::setw(10) << "Index" << " | " << std::setw(10) << "Payload" << " |\n";
         std::cout << " ---------------------------\n";
+
         for (int i = MAXSIZE - 1; i >= 0; --i) {
             std::cout << " | " << std::setw(10) << printOrder[i][0] << " | " << std::setw(10) << printOrder[i][1] << " |\n";
         }
+
         std::cout << " ---------------------------\n";
     } else {
         // If the queue is empty, print an empty table
